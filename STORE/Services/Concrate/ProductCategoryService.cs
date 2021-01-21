@@ -37,6 +37,8 @@ namespace STORE.Services.Concrate
 
         public async Task DeleteProductCategoryAsync(int productCategoryId)
         {
+            if (productCategoryId <= 0)
+                throw new StoreApiException("Geçersiz bir işlem yaptınız");
             await _productCategoryRepository.DeleteAsync(productCategoryId).ConfigureAwait(false);
             await _unitOfWork.SaveChangeAsync().ConfigureAwait(false);
         }

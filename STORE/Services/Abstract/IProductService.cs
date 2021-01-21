@@ -1,4 +1,5 @@
 ﻿using STORE.DTOs;
+using STORE.ENTITY.Includable.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,8 @@ namespace STORE.Services.Abstract
         Task DeleteProductAsync(int productId);
         Task<List<ProductDTO>> GetAllProductAsync();
         Task<ProductDTO> GetByIdProductAsync(int productId);
+        Task<ProductDTO> GetByBarcodeProduct(string barcode);
+
+
     }
 }

@@ -22,6 +22,8 @@ namespace STORE.Services.Concrate
         }
         public async Task<ProductModelDTO> AddProductModelAsync(ProductModelDTO productModelDTO)
         {
+            if (productModelDTO == null)
+                throw new StoreApiException("Eksik yada hatalı bilgi girişi yaptınız");
             var productModels = new ProductModel
             {
                 Id = productModelDTO.Id,
@@ -36,6 +38,8 @@ namespace STORE.Services.Concrate
 
         public async Task DeleteProductModelAsync(int productModelId)
         {
+            if (productModelId <= 0)
+                throw new StoreApiException("Silinmek istenen model bilgilerine erişilemedi");
             await _productModelRepository.DeleteAsync(productModelId).ConfigureAwait(false);
             await _unitOfWork.SaveChangeAsync().ConfigureAwait(false);
         }
@@ -43,7 +47,8 @@ namespace STORE.Services.Concrate
         public async Task<List<ProductModelDTO>> GetAllProductModelAsync()
         {
             var productModels = await _productModelRepository.GetAllAsync().ConfigureAwait(false);
-
+            if (productModels == null)
+                throw new StoreApiException("Kayıtlı herhangi bir model bulunamadı");
             var productDTOs = productModels != null ?
                 (from p in productModels
                  select new ProductModelDTO
@@ -60,7 +65,8 @@ namespace STORE.Services.Concrate
         public async Task<ProductModelDTO> GetByIdProductModelAsync(int productModelId)
         {
             var productModels = await _productModelRepository.GetByIdAsync(productModelId).ConfigureAwait(false);
-
+            if (productModels == null)
+                throw new StoreApiException("İstenilen model bilgilerine erişilemedi");
             var productModelDTOs = new ProductModelDTO
             {
                 Id = productModels.Id,
@@ -74,7 +80,6 @@ namespace STORE.Services.Concrate
         public async Task<ProductModelDTO> UpdateProductModelAsync(ProductModelDTO productModelDTO)
         {
             var models = await _productModelRepository.GetByIdAsync(productModelDTO.Id).ConfigureAwait(false);
-
             if (models == null)
                 throw new StoreApiException("Güncellenmek istenen model bulunamadı");
             models.Name = productModelDTO.Name;

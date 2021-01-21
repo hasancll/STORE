@@ -20,13 +20,14 @@ namespace STORE.MIDDLEWARE.Middlewares
 
         public async Task Invoke(HttpContext httpContext)
         {
+            httpContext.Response.ContentType = "application/json";
             try
             {
                 await _next(httpContext).ConfigureAwait(false);
             }
             catch(Exception ex)
             {
-                String errorMessage = "";
+                String errorMessage = ex.Message;
 
                 if (ex is StoreApiException)
                 {

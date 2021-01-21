@@ -22,6 +22,8 @@ namespace STORE.Services.Concrate
         }
         public async Task<ExpenseDTO> AddExpenseAsync(ExpenseDTO expenseDTO)
         {
+            if (expenseDTO == null)
+                throw new StoreApiException("Eksik ya da hatalı giriş yaptınız");
             var expenses = new Expense
             {
                 Description = expenseDTO.Description,
@@ -43,7 +45,8 @@ namespace STORE.Services.Concrate
         public async Task<List<ExpenseDTO>> GetAllExpenseAsync()
         {
             var expenses = await _expenseRepository.GetAllAsync().ConfigureAwait(false);
-
+            if (expenses == null)
+                throw new StoreApiException("Kayıtlı hiçbir gider bulunamadı");
             var expensesDTO = expenses != null ?
                 (from e in expenses
                  select new ExpenseDTO
@@ -62,6 +65,8 @@ namespace STORE.Services.Concrate
         public async Task<ExpenseDTO> GetByIdExpenseAsync(int expenseId)
         {
             var expenses = await _expenseRepository.GetByIdAsync(expenseId).ConfigureAwait(false);
+            if (expenses == null)
+                throw new StoreApiException("İstenilen şirket bilgilerine ulaşılamadı");
             var expensesDTO = new ExpenseDTO
             {
                 Description = expenses.Description,
@@ -77,7 +82,6 @@ namespace STORE.Services.Concrate
         public async Task<ExpenseDTO> UpdateExpenseAsync(ExpenseDTO expenseDTO)
         {
             var expenses = await _expenseRepository.GetByIdAsync(expenseDTO.Id).ConfigureAwait(false);
-
             if (expenses == null)
                 throw new StoreApiException("Güncellenmek istenen gider bulunamadı");
 

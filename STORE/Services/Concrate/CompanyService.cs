@@ -23,6 +23,8 @@ namespace STORE.Services.Concrate
 
         public async Task<CompanyDTO> AddProductCategoryAsync(CompanyDTO companyDTO)
         {
+            if (companyDTO == null)
+                throw new StoreApiException("Eksik yada hatalı bir bilgi girdiniz");
             var company = new Company
             {
                 Address = companyDTO.Address,
@@ -39,7 +41,10 @@ namespace STORE.Services.Concrate
 
         public async Task<List<CompanyDTO>> GetAllProductCategoryAsync()
         {
+           
             var company = await _companyRepository.GetAllAsync().ConfigureAwait(false);
+            if (company == null)
+                throw new StoreApiException("Kayıtlı hiçbir şirket bulunamadı");
             var companyDTOs = company != null ?
                 (from c in company
                  select new CompanyDTO
@@ -56,6 +61,7 @@ namespace STORE.Services.Concrate
 
         public async Task<CompanyDTO> UpdateCategoryAsync(CompanyDTO companyDTO)
         {
+            
             var companies = await _companyRepository.GetByIdAsync(companyDTO.Id).ConfigureAwait(false);
 
             if (companies == null)

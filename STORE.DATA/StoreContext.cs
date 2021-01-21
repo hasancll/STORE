@@ -9,12 +9,12 @@ using System.Text;
 
 namespace STORE.DATA
 {
-    public class StoreContext : IdentityDbContext
+    public class StoreContext : IdentityDbContext<StoreUser,StoreRole,string>
     {
         public StoreContext(DbContextOptions<StoreContext> options) : base(options)
         {
         }
-        //Burayı Danış
+        
         #region Configurations
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -19,5 +19,17 @@ namespace STORE.MIDDLEWARE.StoreResponseHelper
 
             return JsonConvert.SerializeObject(responseModel);
         }
+
+        public static StoreResponseModel GetStoreResponseModelTry(bool isSucces, String statusCode, String message, object response = null)
+        {
+            var responseModel = new StoreResponseModel();
+
+            responseModel.IsSuccess = isSucces.ToString();
+            responseModel.Message = message;
+            responseModel.StatusCode = statusCode;
+            responseModel.Response = response;
+
+            return responseModel;
+        }
     }
 }

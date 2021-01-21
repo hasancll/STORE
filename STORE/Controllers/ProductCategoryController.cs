@@ -25,36 +25,36 @@ namespace STORE.Controllers
         public async Task<IActionResult> GetAll()
         {
             var categories = await _productcategoryService.GetAllProductCategoryAsync().ConfigureAwait(false);
-
-            return Ok(StoreResponse.GetStoreResponseModel(true, "200", "Kategoriler başarıyla getirildi.", categories));
+            HttpContext.Items["message"] = "Bütün kategoriler getirildi.";
+            return Ok(categories);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var category = await _productcategoryService.GetByIdProductCategoryAsync(id).ConfigureAwait(false);
-
-            return Ok(StoreResponse.GetStoreResponseModel(true,"200","Kategpri başarıyla getirildi",category));
+            HttpContext.Items["message"]= "İstenilen kategori getirildi.";
+            return Ok(category);
         }
         [HttpPost]
         public async Task<IActionResult> AddProductCategory(ProductCategoryDTO productCategoryDTO)
         {
             var category=await _productcategoryService.AddProductCategoryAsync(productCategoryDTO).ConfigureAwait(false);
-
-            return Ok(StoreResponse.GetStoreResponseModel(true, "200", "Kategori başarıyla eklendi.", category));
+            HttpContext.Items["message"] = "İstenilen kategori eklendi.";
+            return Ok(category);
         }
         [HttpPut]
         public async Task<IActionResult> UpdateProductCategory(ProductCategoryDTO productCategoryDTO)
         {
             var category = await _productcategoryService.UpdateCategoryAsync(productCategoryDTO).ConfigureAwait(false);
-
-            return Ok(StoreResponse.GetStoreResponseModel(true, "200", "İstenen katagori başarıyla güncellendi", category));
+            HttpContext.Items["message"] = "İstenilen kategori başarılı şekilde güncellendi.";
+            return Ok(category);
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductCategory(int id)
         {
             await _productcategoryService.DeleteProductCategoryAsync(id).ConfigureAwait(false);
-
-            return Ok(StoreResponse.GetStoreResponseModel(true, "200", "İstenen kategori başarıyla silindi"));
+            HttpContext.Items["message"] = "İstenilen kategori başarılı şekilde silindi.";
+            return Ok();
         }
     }
 }

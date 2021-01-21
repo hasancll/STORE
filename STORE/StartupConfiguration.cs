@@ -18,7 +18,7 @@ namespace STORE
         {
             services.AddDbContext<StoreContext>(option => option.UseMySql(configuration["ConnectionStrings:LocalDatabase"].ToString(), o => { o.MigrationsAssembly("STORE"); }));
 
-            //services.AddIdentity<StoreApiUser, IdentityRole>();//Emre agaya sor birde emre agama initial muhabbetini sor dotnet muhabbeti olacak mıdır bir de lib muhabbetini sor jquery js falan wwwroot
+            //services.AddIdentity<StoreApiUser, IdentityRole>();
 
             /*services.AddIdentity<MarketUser, MarketRole>(options =>
             {

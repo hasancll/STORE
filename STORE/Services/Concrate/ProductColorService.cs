@@ -22,6 +22,8 @@ namespace STORE.Services.Concrate
         }
         public async Task<ProductColorDTO> AddProductColorAsync(ProductColorDTO productColorDTO)
         {
+            if (productColorDTO == null)
+                throw new StoreApiException("Eksik ya da hatalı bilgi girişi yaptınız");
             var productColors = new ProductColor
             {
                 InsertedDate = productColorDTO.InsertedDate,
@@ -36,6 +38,8 @@ namespace STORE.Services.Concrate
 
         public async Task DeleteProductColorAsync(int productColorId)
         {
+            if (productColorId <= 0)
+                throw new StoreApiException("İstenilen renk bilgisine ulaşılamadı");
             await _productColorRepository.DeleteAsync(productColorId).ConfigureAwait(false);
             await _unitOfWork.SaveChangeAsync().ConfigureAwait(false);
         }
@@ -43,7 +47,8 @@ namespace STORE.Services.Concrate
         public async Task<List<ProductColorDTO>> GetAllProductColorAsync()
         {
             var productColors = await _productColorRepository.GetAllAsync().ConfigureAwait(false);
-
+            if (productColors == null)
+                throw new StoreApiException("Kayıtlı herhangi bir renk bulunamadı");
             var productColorDTOs = productColors != null ?
                 (from p in productColors
                  select new ProductColorDTO
@@ -61,7 +66,8 @@ namespace STORE.Services.Concrate
         public async Task<ProductColorDTO> GetByIdProductColorAsync(int productColorId)
         {
             var productColors = await _productColorRepository.GetByIdAsync(productColorId).ConfigureAwait(false);
-
+            if (productColors == null)
+                throw new StoreApiException("İstenilen renk bilgilerine erişilemedi");
             var productColorDTOs = new ProductColorDTO
             {
                 Id = productColors.Id,
@@ -76,9 +82,9 @@ namespace STORE.Services.Concrate
         public async Task<ProductColorDTO> UpdateProductColorAsync(ProductColorDTO productColorDTO)
         {
             var colors = await _productColorRepository.GetByIdAsync(productColorDTO.Id).ConfigureAwait(false);
-
+            
             if (colors == null)
-                throw new StoreApiException("Güncellenmek istenen renk bulunamadı");
+                throw new StoreApiException("Güncellenmek istenen renk bulunamadı.");
 
             colors.Name = productColorDTO.Name;
 

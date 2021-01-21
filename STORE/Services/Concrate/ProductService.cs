@@ -24,10 +24,10 @@ namespace STORE.Services.Concrate
         }
         public async Task<ProductDTO> AddProductAsync(ProductDTO productDTO)
         {
-            if (productDTO.ProductStockDTO == null)
-                throw new StoreApiException("");
+            if (productDTO == null)
+                throw new StoreApiException("Eksik yada hatalı bilgi girişi yaptınız");
 
-            //Emre ağamdan yardım al 
+
             var products = new Product()
             {
                 Barcode = productDTO.Barcode,
@@ -55,14 +55,18 @@ namespace STORE.Services.Concrate
 
         public async Task DeleteProductAsync(int productId)
         {
+            if (productId <= 0)
+                throw new StoreApiException("Silmek istediğiniz ürün bilgilerine erişilemedi");
             await _productRepository.DeleteAsync(productId).ConfigureAwait(false);
             await _unitOfWork.SaveChangeAsync().ConfigureAwait(false);
         }
 
         public async Task<List<ProductDTO>> GetAllProductAsync()
         {
-            //Include muhabbeti ürüne bağlı tablodan birşey  gelecekse 
             var products = await _productRepository.GetAllAsync(p => p.Include(pc => pc.ProductCategory).Include(pr=>pr.ProductColor).Include(pm=>pm.ProductModel).Include(ps=>ps.ProductSize).Include(pso=>pso.ProductStock)).ConfigureAwait(false);
+
+            if (products == null)
+                throw new StoreApiException("Kayıtlı herhangi bir ürün bulunamadı");
 
             var productDTOs = products != null ?
                 (from p in products
@@ -106,46 +110,176 @@ namespace STORE.Services.Concrate
             return productDTOs;
         }
 
+        public async Task<ProductDTO> GetByBarcodeProduct(string barcode)
+        {
+            var product = await _productRepository.GetByBarcodeProduct(barcode).ConfigureAwait(false);
+            if (product == null)
+                throw new StoreApiException("Bu barkod numarasına göre ürün bulunamadı");
+            var products = await _productRepository.GetByIdAsync(product.Id, p => p.Include(pc => pc.ProductCategory).Include(pr => pr.ProductColor).Include(pm => pm.ProductModel).Include(ps => ps.ProductSize).Include(pso => pso.ProductStock)).ConfigureAwait(false);
+            
+            var productDTO = new ProductDTO
+            {
+                Id = products.Id,
+                Barcode = products.Barcode,
+                Description = products.Description,
+                InsertedDate = products.InsertedDate,
+                ProductCode = products.ProductCode,
+                ProductCategoryId = products.ProductCategoryId,
+                ProductCategoryDTO = new ProductCategoryDTO
+                {
+                    Name = products.ProductCategory.Name
+                },
+                ProductColorId = products.ProductColorId,
+                ProductColorDTO = new ProductColorDTO
+                {
+                    Name = product.ProductColor.Name
+                },
+                ProductModelId = products.ProductModelId,
+                ProductModelDTO = new ProductModelDTO
+                {
+                    Name = products.ProductModel.Name
+                },
+                ProductSizeId = products.ProductSizeId,
+                ProductSizeDTO = new ProductSizeDTO
+                {
+                    Name = products.ProductSize.Name
+                },
+                ProfitPrice = products.ProfitPrice,
+                PurchasePrice = products.PurchasePrice,
+                UnitPrice = products.UnitPrice,
+                ProductStockId = products.ProductStockId,
+                ProductStockDTO = new ProductStockDTO
+                {
+                    StockAmount = products.ProductStock.StockAmount
+                }
+                
+            };
+            //var products = await _productRepository.GetByIdAsync(productDTO.Id,p => p.Include(pc => pc.ProductCategory).Include(pr => pr.ProductColor).Include(pm => pm.ProductModel).Include(ps => ps.ProductSize).Include(pso => pso.ProductStock)).ConfigureAwait(false);
+            //var _productDTO = new ProductDTO
+            //{
+            //    Id = products.Id,
+            //    Barcode = products.Barcode,
+            //    Description = products.Description,
+            //    InsertedDate = products.InsertedDate,
+            //    ProductCode = products.ProductCode,
+            //    ProductCategoryId = products.ProductCategoryId,
+            //    ProductCategoryDTO = new ProductCategoryDTO
+            //    {
+            //        Name = products.ProductCategory.Name
+            //    },
+            //    ProductColorId = products.ProductColorId,
+            //    ProductColorDTO = new ProductColorDTO
+            //    {
+            //        Name = products.ProductColor.Name
+            //    },
+            //    ProductModelId = products.ProductModelId,
+            //    ProductModelDTO = new ProductModelDTO
+            //    {
+            //        Name = products.ProductModel.Name
+            //    },
+            //    ProductSizeId = products.ProductSizeId,
+            //    ProductSizeDTO = new ProductSizeDTO
+            //    {
+            //        Name = products.ProductSize.Name
+            //    },
+            //    ProfitPrice = products.ProfitPrice,
+            //    PurchasePrice = products.PurchasePrice,
+            //    UnitPrice = products.UnitPrice,
+            //    ProductStockId = products.ProductStockId,
+            //    ProductStockDTO = new ProductStockDTO
+            //    {
+            //        StockAmount = products.ProductStock.StockAmount
+            //    }
+
+            //};
+            return productDTO;
+        }
+
         public async Task<ProductDTO> GetByIdProductAsync(int productId)
         {
-            var products = await _productRepository.GetByIdAsync(productId).ConfigureAwait(false);
-            //TODO includeları unutma.
+            var products = await _productRepository.GetByIdAsync(productId,p => p.Include(pc => pc.ProductCategory).Include(pr => pr.ProductColor).Include(pm => pm.ProductModel).Include(ps => ps.ProductSize).Include(pso => pso.ProductStock)).ConfigureAwait(false);
+            if (products == null)
+                throw new StoreApiException("Görüntülenmek istenen ürün bilgilerine ulaşılamadı");
             var productDTOs = new ProductDTO
             {
                 Id = products.Id,
                 Barcode = products.Barcode,
-                ProductCode = products.ProductCode,
-                Description = products.Description,               
+                Description = products.Description,
                 InsertedDate = products.InsertedDate,
+                ProductCode = products.ProductCode,
                 ProductCategoryId = products.ProductCategoryId,
                 ProductCategoryDTO = new ProductCategoryDTO
                 {
-                    Name=products.ProductCategory.Name
+                    Name = products.ProductCategory.Name
                 },
                 ProductColorId = products.ProductColorId,
-                ProductColorDTO=new ProductColorDTO
+                ProductColorDTO = new ProductColorDTO
                 {
-                    Name=products.ProductCategory.Name
+                    Name = products.ProductColor.Name
                 },
                 ProductModelId = products.ProductModelId,
-                ProductModelDTO=new ProductModelDTO
+                ProductModelDTO = new ProductModelDTO
                 {
-                    Name=products.ProductModel.Name
+                    Name = products.ProductModel.Name
                 },
                 ProductSizeId = products.ProductSizeId,
-                ProductStockId = products.ProductStockId,
+                ProductSizeDTO = new ProductSizeDTO
+                {
+                    Name = products.ProductSize.Name
+                },
                 ProfitPrice = products.ProfitPrice,
                 PurchasePrice = products.PurchasePrice,
-                UnitPrice = products.UnitPrice
+                UnitPrice = products.UnitPrice,
+                ProductStockId = products.ProductStockId,
+                ProductStockDTO = new ProductStockDTO
+                {
+                    StockAmount = products.ProductStock.StockAmount
+                }
+
             };
+
+            //var products = await _productRepository.GetByIdAsync(productId,x=>x.Include(ps=>ps.ProductStock)).ConfigureAwait(false);
+            //TODO includeları unutma.
+            /* var productDTOs = new ProductDTO
+             {
+                 Id = products.Id,
+                 Barcode = products.Barcode,
+                 ProductCode = products.ProductCode,
+                 Description = products.Description,               
+                 InsertedDate = products.InsertedDate,
+                 ProductCategoryId = products.ProductCategoryId,
+                 ProductCategoryDTO = new ProductCategoryDTO
+                 {
+                     Name=products.ProductCategory.Name
+                 },
+                 ProductColorId = products.ProductColorId,
+                 ProductColorDTO=new ProductColorDTO
+                 {
+                     Name=products.ProductCategory.Name
+                 },
+                 ProductModelId = products.ProductModelId,
+                 ProductModelDTO=new ProductModelDTO
+                 {
+                     Name=products.ProductModel.Name
+                 },
+                 ProductSizeId = products.ProductSizeId,
+                 ProductStockId = products.ProductStockId,
+                 ProfitPrice = products.ProfitPrice,
+                 PurchasePrice = products.PurchasePrice,
+                 UnitPrice = products.UnitPrice
+             };*/
 
             return productDTOs;
         }
 
+       
+
         public async Task<ProductDTO> UpdateProductAsync(ProductDTO productDTO)
         {
+            
             var product = await _productRepository.GetByIdAsync(productDTO.Id, x => x.Include(ps => ps.ProductStock)).ConfigureAwait(false);
-
+            if (product == null)
+                throw new StoreApiException("Geçersiz ya da hatalı bilgi girişi yaptınız");
             /* var products = new Product
              {
                  Id = productDTO.Id,

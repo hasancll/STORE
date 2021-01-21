@@ -1,5 +1,6 @@
 ﻿using STORE.DATA.Repository.Abstract;
 using STORE.DTOs;
+using STORE.EXCEPTION;
 using STORE.Services.Abstract;
 using STORE.UnitOfWork.Abstract;
 using System;
@@ -21,6 +22,8 @@ namespace STORE.Services.Concrate
 
         public async Task DeletePaymentTypeAsync(int paymentTypeId)
         {
+            if (paymentTypeId <= 0)
+                throw new StoreApiException("Silinmek istenen ödeme tipi bilgilerine erişilemedi");
             await _paymentTypeRepository.DeleteAsync(paymentTypeId).ConfigureAwait(false);
             await _unitOfWork.SaveChangeAsync().ConfigureAwait(false);
         }
@@ -28,7 +31,8 @@ namespace STORE.Services.Concrate
         public async Task<List<PaymentTypeDTO>> GetAllPaymentTypeAsync()
         {
             var paymentTypies = await _paymentTypeRepository.GetAllAsync().ConfigureAwait(false);
-
+            if (paymentTypies == null)
+                throw new StoreApiException("Kayıtlı herhangi bir ödeme tipi bulunamadı");
             var paymentTypeDTO = paymentTypies != null ?
                 (from p in paymentTypies
                  select new PaymentTypeDTO

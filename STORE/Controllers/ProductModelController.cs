@@ -23,22 +23,22 @@ namespace STORE.Controllers
         public async Task<IActionResult> GetAllProductModels()
         {
             var models = await _productModelService.GetAllProductModelAsync().ConfigureAwait(false);
-
-            return Ok(StoreResponse.GetStoreResponseModel(true, "200", "Modeller başarıyla getirildi", models));
+            HttpContext.Items["message"] = "Modeller başarılı bir şekilde getirildi.";
+            return Ok(models);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdProductModel(int id)
         {
             var model = await _productModelService.GetByIdProductModelAsync(id).ConfigureAwait(false);
-
-            return Ok(StoreResponse.GetStoreResponseModel(true, "200", "İstenilen model başarıyla getirildi", model));
+            HttpContext.Items["message"] = "İstenilen model başarılı bir şekilde getirildi.";
+            return Ok(model);
         }
         [HttpPost]
         public async Task<IActionResult> AddProductModel(ProductModelDTO productModelDTO)
         {
             var model = await _productModelService.AddProductModelAsync(productModelDTO).ConfigureAwait(false);
-
-            return Ok(StoreResponse.GetStoreResponseModel(true, "200", "Model başarıyla eklendi", model));
+            HttpContext.Items["message"] = "İstenilen model başarılı bir şekilde eklendi.";
+            return Ok(model);
         }
     }
 }

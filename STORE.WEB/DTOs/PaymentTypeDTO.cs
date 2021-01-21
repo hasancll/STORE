@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
-namespace STORE.Models
+namespace STORE.WEB.DTOs
 {
-    public class StoreApiUser:IdentityUser
+    public class PaymentTypeDTO:BaseDTO
     {
+        public string Name { get; set; }
     }
 }

@@ -10,6 +10,7 @@ namespace STORE.DTOs
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        //public IEnumerable<Product> Products { get; set; } böyle olacak galiba sor bakam
+
+        //public IEnumerable<Product> Products { get; set; } 
     }
 }
