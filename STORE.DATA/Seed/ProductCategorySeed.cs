@@ -19,10 +19,32 @@ namespace STORE.DATA.Seed
             { new ProductCategory
             {
                 Id = 1,
-                Description="asdasd",
-                Name="Kadır",
+                Description="Bu kategoriye ürün eklemesi yapılacaktır.",
+                Name="Kadın",
                 InsertedDate = DateTime.Now
-            }
+            },
+            new ProductCategory
+            {
+                Id=2,
+                Description="Bu kategori iptal edilebilir",
+                InsertedDate=DateTime.Now,
+                Name="Erkek"
+            },
+            new ProductCategory
+            {
+                Id=3,
+                Description="Bu kategori güncellenecektir.",
+                InsertedDate=DateTime.Now,
+                Name="Kız Çocuk"
+            },
+            new ProductCategory
+            {
+                Id=4,
+                Description="Bu kategoride çeşit artırılmalıdır.",
+                InsertedDate=DateTime.Now,
+                Name="Erkek Çocuk"
+            },
+
             };
             return categories;
 

@@ -8,8 +8,9 @@ namespace STORE.Services.Abstract
 {
     public interface ICompanyService
     {
-        Task<CompanyDTO > AddProductCategoryAsync(CompanyDTO companyDTO);
+        Task<CompanyDTO> AddProductCategoryAsync(CompanyDTO companyDTO);
         Task<CompanyDTO> UpdateCategoryAsync(CompanyDTO companyDTO);
         Task<List<CompanyDTO>> GetAllProductCategoryAsync();
+        Task<CompanyDTO> GetByIdCompany(int id);
     }
 }

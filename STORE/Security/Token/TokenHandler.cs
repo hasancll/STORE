@@ -21,7 +21,7 @@ namespace STORE.Security.Token
         }
         public AccessToken CreateAccessToken(StoreUser storeUser)
         {
-            var accessTokenExpiration = DateTime.Now.AddMinutes(customTokenOptions.AccessTokenExpiration);
+            var accessTokenExpiration = DateTime.Now.AddDays(customTokenOptions.AccessTokenExpiration);
 
             var securityKey = SignHandler.GetSecurityKey(customTokenOptions.SecurityKey);
 
@@ -66,7 +66,6 @@ namespace STORE.Security.Token
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier,storeUser.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email,storeUser.Email),
                 new Claim(ClaimTypes.Name,$"{storeUser.UserName}"),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
             };

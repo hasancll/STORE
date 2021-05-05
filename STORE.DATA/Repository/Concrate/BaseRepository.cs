@@ -1,10 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LinqKit;
+using Microsoft.EntityFrameworkCore;
 using STORE.DATA.Repository.Abstract;
 using STORE.ENTITY.Entities;
 using STORE.ENTITY.Includable.Abstract;
 using STORE.ENTITY.Includable.Extension;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +15,7 @@ namespace STORE.DATA.Repository.Concrate
 {
     public class BaseRepository<Tentity> : IBaseRepository<Tentity> where Tentity : BaseEntity
     {
-        //Buradaki sıkıntıdan dolayı emreden mantık yardımı lazım 
+       
         protected readonly DbSet<Tentity> _dbSet;
 
         public BaseRepository(StoreContext storeContext)
@@ -52,6 +55,16 @@ namespace STORE.DATA.Repository.Concrate
         public async Task<IEnumerable<Tentity>> GetAllAsync(Func<IIncludable<Tentity>, IIncludable> predicate = null)
         {
             return await _dbSet.IncludeMultiple(predicate).ToListAsync().ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<Tentity>> GetAllAsync(Expression<Func<Tentity, bool>> expression, Func<IIncludable<Tentity>, IIncludable> predicate = null)
+        {
+            return await _dbSet.Where(expression).IncludeMultiple(predicate).ToListAsync().ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<Tentity>> GetAllAsync(ExpressionStarter<Tentity> expressionStarter, Func<IIncludable<Tentity>, IIncludable> predicate = null)
+        {
+            return await _dbSet.Where(expressionStarter).IncludeMultiple(predicate).ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<Tentity> GetByIdAsync(int id, Func<IIncludable<Tentity>, IIncludable> predicate = null)

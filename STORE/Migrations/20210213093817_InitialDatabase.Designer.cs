@@ -10,7 +10,7 @@ using STORE.DATA;
 namespace STORE.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20210110235141_InitialDatabase")]
+    [Migration("20210213093817_InitialDatabase")]
     partial class InitialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,32 +19,6 @@ namespace STORE.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedName")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasName("RoleNameIndex");
-
-                    b.ToTable("AspNetRoles");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
@@ -67,70 +41,6 @@ namespace STORE.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -297,6 +207,20 @@ namespace STORE.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PaymentTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 768, DateTimeKind.Local).AddTicks(480),
+                            Name = "Kredi Kartı"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 768, DateTimeKind.Local).AddTicks(536),
+                            Name = "Nakit"
+                        });
                 });
 
             modelBuilder.Entity("STORE.ENTITY.Entities.Product", b =>
@@ -386,9 +310,30 @@ namespace STORE.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "asdasd",
-                            InsertedDate = new DateTime(2021, 1, 11, 2, 51, 40, 475, DateTimeKind.Local).AddTicks(4517),
-                            Name = "Kadır"
+                            Description = "Bu kategoriye ürün eklemesi yapılacaktır.",
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 767, DateTimeKind.Local).AddTicks(4141),
+                            Name = "Kadın"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Bu kategori iptal edilebilir",
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 767, DateTimeKind.Local).AddTicks(4199),
+                            Name = "Erkek"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Bu kategori güncellenecektir.",
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 767, DateTimeKind.Local).AddTicks(4219),
+                            Name = "Kız Çocuk"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Bu kategoride çeşit artırılmalıdır.",
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 767, DateTimeKind.Local).AddTicks(4221),
+                            Name = "Erkek Çocuk"
                         });
                 });
 
@@ -446,55 +391,55 @@ namespace STORE.Migrations
                         new
                         {
                             Id = 1,
-                            InsertedDate = new DateTime(2021, 1, 11, 2, 51, 40, 472, DateTimeKind.Local).AddTicks(6025),
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 764, DateTimeKind.Local).AddTicks(4329),
                             Name = "ExtraSmall"
                         },
                         new
                         {
                             Id = 2,
-                            InsertedDate = new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5924),
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5101),
                             Name = "Small"
                         },
                         new
                         {
                             Id = 3,
-                            InsertedDate = new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5958),
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5134),
                             Name = "Medium"
                         },
                         new
                         {
                             Id = 4,
-                            InsertedDate = new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5961),
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5138),
                             Name = "Large"
                         },
                         new
                         {
                             Id = 5,
-                            InsertedDate = new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5962),
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5139),
                             Name = "ExtraLarge"
                         },
                         new
                         {
                             Id = 6,
-                            InsertedDate = new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5968),
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5145),
                             Name = "ExtraExtraLarge"
                         },
                         new
                         {
                             Id = 7,
-                            InsertedDate = new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5970),
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5146),
                             Name = "3ExtraLarge"
                         },
                         new
                         {
                             Id = 8,
-                            InsertedDate = new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5971),
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5148),
                             Name = "4ExtraLarge"
                         },
                         new
                         {
                             Id = 9,
-                            InsertedDate = new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5973),
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5149),
                             Name = "5ExtraLarge"
                         });
                 });
@@ -534,6 +479,14 @@ namespace STORE.Migrations
                     b.HasIndex("ReceiptPaymentId");
 
                     b.ToTable("Receipts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            InsertedDate = new DateTime(2021, 2, 13, 12, 38, 16, 768, DateTimeKind.Local).AddTicks(4880),
+                            ReceiptPaymentId = 1
+                        });
                 });
 
             modelBuilder.Entity("STORE.ENTITY.Entities.ReceiptPayment", b =>
@@ -586,14 +539,107 @@ namespace STORE.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
                     b.HasIndex("ReceiptId");
 
                     b.ToTable("SaleProducts");
                 });
 
+            modelBuilder.Entity("STORE.ENTITY.Entities.StoreRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles");
+                });
+
+            modelBuilder.Entity("STORE.ENTITY.Entities.StoreUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("STORE.ENTITY.Entities.StoreRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -602,7 +648,7 @@ namespace STORE.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("STORE.ENTITY.Entities.StoreUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -611,7 +657,7 @@ namespace STORE.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("STORE.ENTITY.Entities.StoreUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -620,13 +666,13 @@ namespace STORE.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("STORE.ENTITY.Entities.StoreRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("STORE.ENTITY.Entities.StoreUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -635,7 +681,7 @@ namespace STORE.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("STORE.ENTITY.Entities.StoreUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -695,6 +741,12 @@ namespace STORE.Migrations
 
             modelBuilder.Entity("STORE.ENTITY.Entities.SoldProduct", b =>
                 {
+                    b.HasOne("STORE.ENTITY.Entities.Product", "Product")
+                        .WithOne("SoldProduct")
+                        .HasForeignKey("STORE.ENTITY.Entities.SoldProduct", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("STORE.ENTITY.Entities.Receipt", "Receipt")
                         .WithMany("SaleProducts")
                         .HasForeignKey("ReceiptId")

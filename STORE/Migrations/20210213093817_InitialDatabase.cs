@@ -397,6 +397,12 @@ namespace STORE.Migrations
                 {
                     table.PrimaryKey("PK_SaleProducts", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_SaleProducts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_SaleProducts_Receipts_ReceiptId",
                         column: x => x.ReceiptId,
                         principalTable: "Receipts",
@@ -405,25 +411,45 @@ namespace STORE.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "PaymentTypes",
+                columns: new[] { "Id", "InsertedDate", "Name" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2021, 2, 13, 12, 38, 16, 768, DateTimeKind.Local).AddTicks(480), "Kredi Kartı" },
+                    { 2, new DateTime(2021, 2, 13, 12, 38, 16, 768, DateTimeKind.Local).AddTicks(536), "Nakit" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "ProductCategories",
                 columns: new[] { "Id", "Description", "InsertedDate", "Name" },
-                values: new object[] { 1, "asdasd", new DateTime(2021, 1, 11, 2, 51, 40, 475, DateTimeKind.Local).AddTicks(4517), "Kadır" });
+                values: new object[,]
+                {
+                    { 1, "Bu kategoriye ürün eklemesi yapılacaktır.", new DateTime(2021, 2, 13, 12, 38, 16, 767, DateTimeKind.Local).AddTicks(4141), "Kadın" },
+                    { 2, "Bu kategori iptal edilebilir", new DateTime(2021, 2, 13, 12, 38, 16, 767, DateTimeKind.Local).AddTicks(4199), "Erkek" },
+                    { 3, "Bu kategori güncellenecektir.", new DateTime(2021, 2, 13, 12, 38, 16, 767, DateTimeKind.Local).AddTicks(4219), "Kız Çocuk" },
+                    { 4, "Bu kategoride çeşit artırılmalıdır.", new DateTime(2021, 2, 13, 12, 38, 16, 767, DateTimeKind.Local).AddTicks(4221), "Erkek Çocuk" }
+                });
 
             migrationBuilder.InsertData(
                 table: "ProductSizes",
                 columns: new[] { "Id", "InsertedDate", "Name" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 1, 11, 2, 51, 40, 472, DateTimeKind.Local).AddTicks(6025), "ExtraSmall" },
-                    { 2, new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5924), "Small" },
-                    { 3, new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5958), "Medium" },
-                    { 4, new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5961), "Large" },
-                    { 5, new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5962), "ExtraLarge" },
-                    { 6, new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5968), "ExtraExtraLarge" },
-                    { 7, new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5970), "3ExtraLarge" },
-                    { 8, new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5971), "4ExtraLarge" },
-                    { 9, new DateTime(2021, 1, 11, 2, 51, 40, 473, DateTimeKind.Local).AddTicks(5973), "5ExtraLarge" }
+                    { 1, new DateTime(2021, 2, 13, 12, 38, 16, 764, DateTimeKind.Local).AddTicks(4329), "ExtraSmall" },
+                    { 2, new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5101), "Small" },
+                    { 3, new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5134), "Medium" },
+                    { 4, new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5138), "Large" },
+                    { 5, new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5139), "ExtraLarge" },
+                    { 6, new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5145), "ExtraExtraLarge" },
+                    { 7, new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5146), "3ExtraLarge" },
+                    { 8, new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5148), "4ExtraLarge" },
+                    { 9, new DateTime(2021, 2, 13, 12, 38, 16, 765, DateTimeKind.Local).AddTicks(5149), "5ExtraLarge" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Receipts",
+                columns: new[] { "Id", "InsertedDate", "ReceiptPaymentId" },
+                values: new object[] { 1, new DateTime(2021, 2, 13, 12, 38, 16, 768, DateTimeKind.Local).AddTicks(4880), 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -505,6 +531,12 @@ namespace STORE.Migrations
                 column: "ReceiptPaymentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SaleProducts_ProductId",
+                table: "SaleProducts",
+                column: "ProductId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SaleProducts_ReceiptId",
                 table: "SaleProducts",
                 column: "ReceiptId");
@@ -537,9 +569,6 @@ namespace STORE.Migrations
                 name: "ExpensesIncomes");
 
             migrationBuilder.DropTable(
-                name: "Products");
-
-            migrationBuilder.DropTable(
                 name: "SaleProducts");
 
             migrationBuilder.DropTable(
@@ -547,6 +576,12 @@ namespace STORE.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Receipts");
 
             migrationBuilder.DropTable(
                 name: "ProductCategories");
@@ -562,9 +597,6 @@ namespace STORE.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductStocks");
-
-            migrationBuilder.DropTable(
-                name: "Receipts");
 
             migrationBuilder.DropTable(
                 name: "ReceiptPayments");

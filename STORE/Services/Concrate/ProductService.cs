@@ -72,6 +72,7 @@ namespace STORE.Services.Concrate
                 (from p in products
                  select new ProductDTO
                  {
+                    
                      Id = p.Id,
                      Barcode = p.Barcode,
                      ProductCode = p.ProductCode,
@@ -154,44 +155,7 @@ namespace STORE.Services.Concrate
                 }
                 
             };
-            //var products = await _productRepository.GetByIdAsync(productDTO.Id,p => p.Include(pc => pc.ProductCategory).Include(pr => pr.ProductColor).Include(pm => pm.ProductModel).Include(ps => ps.ProductSize).Include(pso => pso.ProductStock)).ConfigureAwait(false);
-            //var _productDTO = new ProductDTO
-            //{
-            //    Id = products.Id,
-            //    Barcode = products.Barcode,
-            //    Description = products.Description,
-            //    InsertedDate = products.InsertedDate,
-            //    ProductCode = products.ProductCode,
-            //    ProductCategoryId = products.ProductCategoryId,
-            //    ProductCategoryDTO = new ProductCategoryDTO
-            //    {
-            //        Name = products.ProductCategory.Name
-            //    },
-            //    ProductColorId = products.ProductColorId,
-            //    ProductColorDTO = new ProductColorDTO
-            //    {
-            //        Name = products.ProductColor.Name
-            //    },
-            //    ProductModelId = products.ProductModelId,
-            //    ProductModelDTO = new ProductModelDTO
-            //    {
-            //        Name = products.ProductModel.Name
-            //    },
-            //    ProductSizeId = products.ProductSizeId,
-            //    ProductSizeDTO = new ProductSizeDTO
-            //    {
-            //        Name = products.ProductSize.Name
-            //    },
-            //    ProfitPrice = products.ProfitPrice,
-            //    PurchasePrice = products.PurchasePrice,
-            //    UnitPrice = products.UnitPrice,
-            //    ProductStockId = products.ProductStockId,
-            //    ProductStockDTO = new ProductStockDTO
-            //    {
-            //        StockAmount = products.ProductStock.StockAmount
-            //    }
-
-            //};
+            
             return productDTO;
         }
 

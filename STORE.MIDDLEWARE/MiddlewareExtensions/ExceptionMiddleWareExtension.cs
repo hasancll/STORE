@@ -12,5 +12,10 @@ namespace STORE.MIDDLEWARE.MiddlewareExtensions
         {
             app.UseMiddleware<ExceptionMiddleware>();
         }
+
+        public static void UseStatusCodeMiddleWare(this IApplicationBuilder app)
+        {
+            app.UseMiddleware<CheckStatusMiddleware>();
+        }
     }
 }

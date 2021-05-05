@@ -28,6 +28,9 @@ namespace STORE.DATA
             #region Seed's
             modelBuilder.ApplyConfiguration(new ProductSizeSeed());
             modelBuilder.ApplyConfiguration(new ProductCategorySeed());
+            modelBuilder.ApplyConfiguration(new PaymentTypeSeed());
+            modelBuilder.ApplyConfiguration(new ProductColorSeed());
+            //modelBuilder.ApplyConfiguration(new ReceiptSeed());
             #endregion
 
             base.OnModelCreating(modelBuilder);
@@ -45,7 +48,7 @@ namespace STORE.DATA
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<ProductSize> ProductSizes { get; set; }
         public DbSet<ProductColor> ProductColors { get; set; }
-        public DbSet<Receipt> Receipts { get; set; }
+        public DbSet<ENTITY.Entities.Receipt> Receipts { get; set; }
         public DbSet<ReceiptPayment> ReceiptPayments { get; set; }
         public DbSet<SoldProduct> SaleProducts { get; set; }
 

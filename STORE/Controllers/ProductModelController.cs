@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using STORE.DTOs;
 using STORE.MIDDLEWARE.StoreResponseHelper;
@@ -12,6 +13,7 @@ namespace STORE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductModelController : ControllerBase
     {
         private readonly IProductModelService _productModelService;
@@ -38,6 +40,20 @@ namespace STORE.Controllers
         {
             var model = await _productModelService.AddProductModelAsync(productModelDTO).ConfigureAwait(false);
             HttpContext.Items["message"] = "İstenilen model başarılı bir şekilde eklendi.";
+            return Ok(model);
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProductModel(int id)
+        {
+            await _productModelService.DeleteProductModelAsync(id).ConfigureAwait(false);
+            HttpContext.Items["message"] = "İstenilen model başarılı şekilde silindi.";
+            return Ok();
+        }
+        [HttpPut]
+        public async Task<IActionResult> UpdateProductModel(ProductModelDTO productModelDTO)
+        {
+            var model = await _productModelService.UpdateProductModelAsync(productModelDTO).ConfigureAwait(false);
+            HttpContext.Items["message"] = "İstenilen model başarılı şekilde güncellendi.";
             return Ok(model);
         }
     }

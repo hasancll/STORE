@@ -31,5 +31,6 @@ namespace STORE.MIDDLEWARE.StoreResponseHelper
 
             return responseModel;
         }
+        
     }
 }

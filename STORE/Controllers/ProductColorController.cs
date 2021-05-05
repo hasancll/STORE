@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using STORE.DTOs;
 using STORE.MIDDLEWARE.StoreResponseHelper;
@@ -12,6 +13,7 @@ namespace STORE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductColorController : ControllerBase
     {
         private readonly IProductColorService _productColorService;

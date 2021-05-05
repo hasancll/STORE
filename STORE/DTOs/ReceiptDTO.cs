@@ -9,7 +9,7 @@ namespace STORE.DTOs
     public class ReceiptDTO:BaseDTO
     {
         public int ReceiptPaymentId { get; set; }
-        public virtual ReceiptPaymentDTO GetReceiptPaymentDTO { get; set; }
+        public virtual ReceiptPaymentDTO ReceiptPaymentDTO { get; set; }
         public IEnumerable<SoldProductDTO> SoldProductDTO { get; set; }
         
     }

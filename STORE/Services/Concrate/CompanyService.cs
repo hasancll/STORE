@@ -44,7 +44,7 @@ namespace STORE.Services.Concrate
            
             var company = await _companyRepository.GetAllAsync().ConfigureAwait(false);
             if (company == null)
-                throw new StoreApiException("Kayıtlı hiçbir şirket bulunamadı");
+                throw new StoreApiException("Kayıtlı hiçbir kurum bulunamadı");
             var companyDTOs = company != null ?
                 (from c in company
                  select new CompanyDTO
@@ -59,13 +59,32 @@ namespace STORE.Services.Concrate
             return companyDTOs;
         }
 
+        public async Task<CompanyDTO> GetByIdCompany(int id)
+        {
+            var company = await _companyRepository.GetByIdAsync(id).ConfigureAwait(false);
+            if (company == null)
+            {
+                throw new StoreApiException("Bu bilgilere ait kurum bulunamadı.");
+            }
+            var companyDto = new CompanyDTO()
+            {
+                Id = company.Id,
+                Address = company.Address,
+                Name = company.Name,
+                Number = company.Number,
+                InsertedDate = company.InsertedDate
+            };
+            return companyDto;
+
+        }
+
         public async Task<CompanyDTO> UpdateCategoryAsync(CompanyDTO companyDTO)
         {
             
             var companies = await _companyRepository.GetByIdAsync(companyDTO.Id).ConfigureAwait(false);
 
             if (companies == null)
-                throw new StoreApiException("Güncellenmek istenen şirket bulunamadı");
+                throw new StoreApiException("Güncellenmek istenen kurum bulunamadı");
             companies.Name = companyDTO.Name;
             companies.Number = companyDTO.Number;
             companies.Address = companyDTO.Address;

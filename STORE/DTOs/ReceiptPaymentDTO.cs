@@ -11,6 +11,5 @@ namespace STORE.DTOs
         public virtual PaymentTypeDTO PaymentTypeDTO { get; set; }
         public decimal Card { get; set; }
         public decimal Cash { get; set; }
-        public decimal TotalPrice { get; set; }
     }
 }

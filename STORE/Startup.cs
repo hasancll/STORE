@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,9 @@ using STORE.DATA;
 using STORE.ENTITY.Entities;
 using STORE.MIDDLEWARE.MiddlewareExtensions;
 using STORE.Security.Token;
+using STORE.Services.Abstract;
+using STORE.Services.Concrate;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +34,14 @@ namespace STORE
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            /*services.AddCors(opts =>
+            {
+                opts.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });*/
+
             services.AddControllers();
 
             services.ConfigureDatabase(Configuration);
@@ -45,7 +57,8 @@ namespace STORE
                 opts.Password.RequireLowercase = false;
                 opts.Password.RequireUppercase = false;
                 opts.Password.RequireDigit = false;
-            }).AddEntityFrameworkStores<StoreContext>();
+            }).AddEntityFrameworkStores<StoreContext>().AddDefaultTokenProviders();
+            
             services.Configure<CustomTokenOptions>(Configuration.GetSection("TokenOptions"));
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<CustomTokenOptions>();
             services.AddAuthentication(opts=>
@@ -63,10 +76,13 @@ namespace STORE
                     ValidIssuer = tokenOptions.Issuer,
                     ValidAudience = tokenOptions.Audience,
                     IssuerSigningKey=SignHandler.GetSecurityKey(tokenOptions.SecurityKey),
-                    ClockSkew = TimeSpan.Zero
+                    ClockSkew = TimeSpan.Zero,
+                    
                 };
             });
             services.ConfigureDependecyInjections();
+
+            services.ConfigureSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,20 +90,29 @@ namespace STORE
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
 
-            app.UseResponseWrapperMiddleware();
-
-            app.UseExceptionMiddleWare();
+            app.UseSwagger();
+            app.UseSwaggerUI(x =>
+            {
+                x.SwaggerEndpoint("/swagger/v1/swagger.json", "Api Example V1");
+                x.DocExpansion(DocExpansion.None);
+            });
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
+            app.UseStatusCodeMiddleWare();
+
             app.UseAuthorization();
 
-            app.UseAuthentication();
+            app.UseResponseWrapperMiddleware();
+
+            app.UseExceptionMiddleWare();
 
             app.UseEndpoints(endpoints =>
             {

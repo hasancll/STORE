@@ -31,5 +31,7 @@ namespace STORE.ENTITY.Entities
         public int ProductSizeId { get; set; }
         public virtual ProductSize ProductSize { get; set; }
 
+        public virtual SoldProduct SoldProduct { get; set; }
+
     }
 }

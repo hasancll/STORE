@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using STORE.MIDDLEWARE.StoreResponseHelper;
 using STORE.Services.Abstract;
@@ -11,6 +12,7 @@ namespace STORE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PaymentTypeController : ControllerBase
     {
         private readonly IPaymentTypeService _paymentTypeService;
